@@ -18,14 +18,13 @@ jobs:
       - name: Install dependencies
         run: cd frontend && npm ci
 
-      - name: Build
+      - name: Build (static export)
         run: cd frontend && npm run build
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: "89f7e2d36d8ec57f55770ee400685f53"
-          projectName: nhprince-restaurant
-          directory: frontend/out
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          workingDirectory: frontend
+          command: pages deploy out --project-name=nhprince-restaurant --branch=main --commit-dirty=true
