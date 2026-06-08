@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +23,30 @@ jobs:
       - name: Build
         run: cd frontend && npm run build
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: out
+          path: frontend/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: out
+          path: out
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          workingDirectory: frontend
-          command: pages deploy out --project-name=restaurant-landing
+          projectName: restaurant-landing
+          directory: out
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
