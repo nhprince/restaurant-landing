@@ -1,0 +1,13 @@
+# Disable GitHub Pages workflow — using Cloudflare Pages instead
+# This file is intentionally empty to prevent the old workflow from running
+name: Disabled
+
+on:
+  push:
+    branches: [never]
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Disabled"
