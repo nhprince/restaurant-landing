@@ -116,8 +116,12 @@ function Navbar() {
         <div className="container-fluid">
           <div className="navbar-inner">
             <a href="#home" className="nav-logo">
-              <div className="nav-logo-icon">M</div>
-              <span className="hidden sm:inline">AISON</span>
+              <svg className="nav-logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1.5" className="text-[var(--accent)]" />
+                <path d="M16 32V16l8 10 8-10v16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-primary)]" />
+                <circle cx="24" cy="10" r="2" fill="currentColor" className="text-[var(--accent)]" />
+              </svg>
+              <span className="nav-logo-text hidden sm:inline">MAISON</span>
             </a>
 
             <div className="nav-links">
@@ -146,8 +150,12 @@ function Navbar() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
             <div className="mb-6 flex items-center gap-3">
-              <div className="nav-logo-icon">M</div>
-              <span className="nav-logo text-xl">MAISON</span>
+              <svg className="nav-logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1.5" className="text-[var(--accent)]" />
+                <path d="M16 32V16l8 10 8-10v16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-primary)]" />
+                <circle cx="24" cy="10" r="2" fill="currentColor" className="text-[var(--accent)]" />
+              </svg>
+              <span className="nav-logo-text text-xl">MAISON</span>
             </div>
             {NAV_LINKS.map(l => (
               <a key={l.label} href={l.href} onClick={() => setDrawerOpen(false)}>{l.label}</a>
@@ -185,9 +193,9 @@ function Hero() {
 
       <div className="relative z-10 container-fluid text-center">
         <div className="animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-4 py-2 border border-[var(--border-accent)] rounded-full mb-6 md:mb-8">
-            <span className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full animate-pulse" />
-            <p className="text-label mb-0 text-[var(--accent)]">Fine Dining Experience</p>
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 border border-[var(--border-accent)] rounded-full mb-6 md:mb-8">
+            <span className="w-2 h-2 bg-[var(--accent)] rounded-full animate-pulse flex-shrink-0" />
+            <p className="text-label mb-0 text-[var(--accent)] leading-none">Fine Dining Experience</p>
           </div>
         </div>
 
@@ -564,8 +572,12 @@ function Footer() {
         <div className="footer-grid mb-8 md:mb-12">
           <div className="md:col-span-2 lg:col-span-1">
             <a href="#home" className="nav-logo mb-3 md:mb-4 inline-flex">
-              <div className="nav-logo-icon">M</div>
-              <span>MAISON</span>
+              <svg className="nav-logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="1.5" className="text-[var(--accent)]" />
+                <path d="M16 32V16l8 10 8-10v16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--text-primary)]" />
+                <circle cx="24" cy="10" r="2" fill="currentColor" className="text-[var(--accent)]" />
+              </svg>
+              <span className="nav-logo-text">MAISON</span>
             </a>
             <p className="text-body text-xs md:text-sm mt-3 md:mt-4 max-w-sm">A sanctuary of culinary artistry where locally sourced ingredients meet artisan techniques. Every plate tells a story.</p>
             <div className="flex gap-3 md:gap-4 mt-4 md:mt-6">

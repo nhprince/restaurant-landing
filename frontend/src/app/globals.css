@@ -222,7 +222,7 @@ body {
   left: 0;
   right: 0;
   z-index: 50;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .navbar-scrolled {
   background: rgba(10, 10, 10, 0.92);
@@ -243,33 +243,31 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+/* ─── LOGO ──────────────────────────────────────────────────────── */
 .nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.625rem;
-  font-weight: 300;
-  letter-spacing: 0.15em;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
-.nav-logo-icon {
-  width: 2rem;
-  height: 2rem;
-  border: 0.125rem solid var(--accent);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  color: var(--accent);
-  font-weight: 600;
+.nav-logo-svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
 }
 @media (min-width: 48rem) {
-  .nav-logo { font-size: 2rem; }
-  .nav-logo-icon { width: 2.25rem; height: 2.25rem; }
+  .nav-logo-svg { width: 3rem; height: 3rem; }
+}
+.nav-logo-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+@media (min-width: 48rem) {
+  .nav-logo-text { font-size: 1.875rem; }
 }
 .nav-links { display: none; }
 @media (min-width: 64rem) {
@@ -317,7 +315,7 @@ body {
   z-index: 100;
   pointer-events: none;
   visibility: hidden;
-  transition: visibility 0s linear 0.4s;
+  transition: visibility 0s linear 0.3s;
 }
 .mobile-drawer.open {
   pointer-events: all;
@@ -331,7 +329,7 @@ body {
   backdrop-filter: blur(0.5rem);
   -webkit-backdrop-filter: blur(0.5rem);
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.3, 1);
+  transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .mobile-drawer.open .mobile-drawer-backdrop { opacity: 1; }
 .mobile-drawer-panel {
@@ -342,7 +340,7 @@ body {
   width: 80%;
   max-width: 22rem;
   transform: translateX(100%);
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background: rgba(10, 10, 10, 0.98);
   backdrop-filter: blur(1.5rem);
   -webkit-backdrop-filter: blur(1.5rem);
@@ -360,9 +358,6 @@ body {
   border-bottom: 0.0625rem solid var(--border);
   text-decoration: none;
   transition: color 0.2s;
-}
-.mobile-drawer-panel a:hover { color: var(--accent); }
-
 /* ─── HERO WITH PARALLAX ──────────────────────────────────────── */
 .hero-section {
   position: relative;
@@ -372,15 +367,19 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding-top: 5rem;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+@media (min-width: 48rem) {
+  .hero-section { padding-top: 6rem; padding-bottom: 0; }
 }
 .hero-bg-image {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  transform: scale(1.1);
-  transition: transform 0.3s;
+  transform: scale(1.05);
+  transition: transform 0.3s ease-out;
   will-change: transform;
 }
 .hero-bg-overlay {
@@ -388,9 +387,9 @@ body {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.7) 0%,
-    rgba(10, 10, 10, 0.4) 40%,
-    rgba(10, 10, 10, 0.5) 70%,
+    rgba(10, 10, 10, 0.75) 0%,
+    rgba(10, 10, 10, 0.5) 40%,
+    rgba(10, 10, 10, 0.6) 70%,
     rgba(10, 10, 10, 0.95) 100%
   );
 }
@@ -608,31 +607,99 @@ body {
   transform: translateY(2.5rem);
   animation: fadeInUp 0.8s ease-out forwards;
 }
-.animate-fade-in {
-  opacity: 0;
-  animation: fadeIn 0.6s ease-out forwards;
+/* ─── SMOOTH SCROLLING & GPU ACCELERATION ──────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* GPU-accelerated transitions */
+.glass-card,
+.btn-primary,
+.btn-secondary,
+.gallery-item,
+.menu-item,
+.image-frame img,
+.nav-links a,
+.gallery-item img,
+.guest-btn,
+.form-input {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Smooth parallax — already defined in hero section above */
+
+/* ─── SMOOTH ANIMATIONS ────────────────────────────────────────── */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(2.5rem); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(2rem) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
 }
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.25s; }
-.stagger-3 { animation-delay: 0.4s; }
-.stagger-4 { animation-delay: 0.55s; }
-.stagger-5 { animation-delay: 0.7s; }
-.stagger-6 { animation-delay: 0.85s; }
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  50% { background-position: 200% center; }
+  100% { background-position: 0% center; }
+}
 
-/* Scroll-reveal (Intersection Observer driven) */
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(0.5rem); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(1.5rem, -2rem) scale(1.03); }
+  50% { transform: translate(-1rem, 1rem) scale(0.97); }
+  75% { transform: translate(2rem, 1.5rem) scale(1.02); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 0.5rem rgba(201, 169, 110, 0); }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(2rem);
+  animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.35s; }
+.stagger-4 { animation-delay: 0.5s; }
+.stagger-5 { animation-delay: 0.65s; }
+
+/* Scroll-reveal with smooth transition */
 .reveal {
   opacity: 0;
-  transform: translateY(3rem);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(2.5rem);
+  transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .reveal.visible {
   opacity: 1;
