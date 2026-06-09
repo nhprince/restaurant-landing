@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
-   MAISON RESTAURANT — PREMIUM RESPONSIVE
-   Exact patterns from Minimalist Gaming: rem-based, 4K-ready
-   Dual-layout, mobile drawer, fluid typography, touch-optimized
+   MAISON RESTAURANT — PREMIUM EXPERIENCE
+   Hero with parallax, real images, micro-animations, custom logo
    ═══════════════════════════════════════════════════════════════ */
+
+const UNSPLASH = (id: string, w = 1920) =>
+  `https://images.unsplash.com/photo-${id}?ixlib=rb-4.1.0&auto=format&fit=crop&w=${w}&q=80`;
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
@@ -22,45 +24,45 @@ const MENU_CATEGORIES = [
   {
     name: "Starters",
     items: [
-      { name: "Tuna Tartare", desc: "Avocado mousse, sesame crisp, yuzu", price: "$24" },
-      { name: "Burrata", desc: "Heirloom tomatoes, basil oil, aged balsamic", price: "$19" },
-      { name: "Oysters", desc: "Half dozen, mignonette, lemon", price: "$28" },
-      { name: "Foie Gras", desc: "Brioche, fig compote, micro greens", price: "$32" },
+      { name: "Tuna Tartare", desc: "Avocado mousse, sesame crisp, yuzu dressing", price: "$24", img: UNSPLASH("1546833999-b9f581a19d6d", 600) },
+      { name: "Burrata", desc: "Heirloom tomatoes, basil oil, aged balsamic", price: "$19", img: UNSPLASH("1522906456132-bac22adad34e", 600) },
+      { name: "Oysters", desc: "Half dozen, champagne mignonette, lemon", price: "$28", img: UNSPLASH("1750943083282-2542e334fbad", 600) },
+      { name: "Foie Gras", desc: "Brioche toast, fig compote, micro greens", price: "$32", img: UNSPLASH("1616669944447-d65d41a222bd", 600) },
     ],
   },
   {
     name: "Mains",
     items: [
-      { name: "Wagyu Ribeye", desc: "Truffle jus, roasted bone marrow, seasonal vegetables", price: "$68" },
-      { name: "Pan-Seared Sea Bass", desc: "Saffron broth, fennel, citrus beurre blanc", price: "$48" },
-      { name: "Duck Confit", desc: "Lentil du Puy, cherry gastrique, crispy skin", price: "$42" },
-      { name: "Lobster Risotto", desc: "Arborio rice, bisque reduction, chive oil", price: "$56" },
+      { name: "Wagyu Ribeye", desc: "Truffle jus, roasted bone marrow, seasonal vegetables", price: "$68", img: UNSPLASH("1616669944447-d65d41a222bd", 600) },
+      { name: "Pan-Seared Sea Bass", desc: "Saffron broth, fennel, citrus beurre blanc", price: "$48", img: UNSPLASH("1750943083282-2542e334fbad", 600) },
+      { name: "Duck Confit", desc: "Lentil du Puy, cherry gastrique, crispy skin", price: "$42", img: UNSPLASH("1546833999-b9f581a19d6d", 600) },
+      { name: "Lobster Risotto", desc: "Arborio rice, bisque reduction, chive oil", price: "$56", img: UNSPLASH("1498579150354-977475b7ea0b", 600) },
     ],
   },
   {
     name: "Desserts",
     items: [
-      { name: "Chocolate Fondant", desc: "Valrhona chocolate, vanilla bean ice cream", price: "$18" },
-      { name: "Crème Brûlée", desc: "Madagascar vanilla, caramelized sugar", price: "$16" },
-      { name: "Tarte Tatin", desc: "Caramelized apple, calvados cream", price: "$17" },
-      { name: "Cheese Selection", desc: "Artisan cheeses, honeycomb, walnut bread", price: "$24" },
+      { name: "Chocolate Fondant", desc: "Valrhona chocolate, vanilla bean ice cream", price: "$18", img: UNSPLASH("1698688334089-c68105801d02", 600) },
+      { name: "Crème Brûlée", desc: "Madagascar vanilla, caramelized sugar", price: "$16", img: UNSPLASH("1663100143193-bca3e76f81b6", 600) },
+      { name: "Tarte Tatin", desc: "Caramelized apple, calvados cream", price: "$17", img: UNSPLASH("1698688334089-c68105801d02", 600) },
+      { name: "Cheese Selection", desc: "Artisan cheeses, honeycomb, walnut bread", price: "$24", img: UNSPLASH("1522906456132-bac22adad34e", 600) },
     ],
   },
 ];
 
 const GALLERY_ITEMS = [
-  { category: "Mains", title: "Wagyu Ribeye" },
-  { category: "Starters", title: "Tuna Tartare" },
-  { category: "Desserts", title: "Chocolate Fondant" },
-  { category: "Starters", title: "Burrata" },
-  { category: "Mains", title: "Sea Bass" },
-  { category: "Desserts", title: "Crème Brûlée" },
+  { category: "Mains", title: "Wagyu Ribeye", img: UNSPLASH("1616669944447-d65d41a222bd", 800) },
+  { category: "Sushi", title: "Sashimi Selection", img: UNSPLASH("1700324828870-43027cba6d18", 800) },
+  { category: "Desserts", title: "Chocolate Fondant", img: UNSPLASH("1698688334089-c68105801d02", 800) },
+  { category: "Pasta", title: "Lobster Linguine", img: UNSPLASH("1498579150354-977475b7ea0b", 800) },
+  { category: "Seafood", title: "Grilled Sea Bass", img: UNSPLASH("1750943083282-2542e334fbad", 800) },
+  { category: "Drinks", title: "Signature Cocktail", img: UNSPLASH("1605270012917-bf157c5a9541", 800) },
 ];
 
 const TESTIMONIALS = [
-  { name: "Elena Rossi", role: "Food Critic", text: "An extraordinary culinary journey. Every dish tells a story of passion and precision. MAISON is not just a restaurant — it's an experience." },
-  { name: "James Chen", role: "Michelin Guide", text: "The attention to detail is remarkable. From the ambiance to the plate, everything speaks of excellence. A must-visit destination." },
-  { name: "Sophie Laurent", role: "Travel Blogger", text: "I've dined at restaurants worldwide. MAISON stands apart — the flavors are bold yet refined, the service impeccable. Truly unforgettable." },
+  { name: "Elena Rossi", role: "Food Critic — The New York Times", text: "An extraordinary culinary journey. Every dish tells a story of passion and precision. MAISON is not just a restaurant — it's an experience that lingers long after the last bite.", avatar: UNSPLASH("1494790108377-be9c29b29330", 200) },
+  { name: "James Chen", role: "Michelin Guide Inspector", text: "The attention to detail is remarkable. From the ambiance to the plate, everything speaks of excellence. A must-visit destination for anyone who appreciates true craft.", avatar: UNSPLASH("1560250097-0b93528c311a", 200) },
+  { name: "Sophie Laurent", role: "Travel & Food Blogger", text: "I've dined at restaurants across 40 countries. MAISON stands apart — the flavors are bold yet refined, the service impeccable. Truly unforgettable in every way.", avatar: UNSPLASH("1573496359142-b8d87734a5a2", 200) },
 ];
 
 const CONTACT_CARDS = [
@@ -73,6 +75,23 @@ const FOOTER_COLS = [
   { title: "Quick Links", links: [{ l: "Menu", h: "#menu" }, { l: "Reservations", h: "#reservation" }, { l: "Gallery", h: "#gallery" }, { l: "About Us", h: "#about" }] },
   { title: "Social", links: [{ l: "Instagram", h: "#" }, { l: "Facebook", h: "#" }, { l: "Twitter", h: "#" }] },
 ];
+
+// ─── SCROLL REVEAL HOOK ─────────────────────────────────────────
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) el.classList.add("visible"); },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
 
 // ─── NAVBAR ──────────────────────────────────────────────────────
 
@@ -96,7 +115,10 @@ function Navbar() {
       <nav className={`navbar ${scrolled ? "navbar-scrolled" : "navbar-transparent"}`}>
         <div className="container-fluid">
           <div className="navbar-inner">
-            <a href="#home" className="nav-logo">MAISON</a>
+            <a href="#home" className="nav-logo">
+              <div className="nav-logo-icon">M</div>
+              <span className="hidden sm:inline">AISON</span>
+            </a>
 
             <div className="nav-links">
               {NAV_LINKS.map(l => (
@@ -123,7 +145,8 @@ function Navbar() {
             <button onClick={() => setDrawerOpen(false)} className="absolute top-4 right-4 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]" aria-label="Close menu">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
-            <div className="mb-6">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="nav-logo-icon">M</div>
               <span className="nav-logo text-xl">MAISON</span>
             </div>
             {NAV_LINKS.map(l => (
@@ -140,34 +163,70 @@ function Navbar() {
 // ─── HERO ────────────────────────────────────────────────────────
 
 function Hero() {
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const h = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
   return (
     <section id="home" className="hero-section">
-      <div className="absolute inset-0 bg-[var(--bg-primary)]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg-primary)] via-transparent to-[var(--bg-primary)]" />
+      {/* Parallax Background Image */}
+      <div
+        className="hero-bg-image"
+        style={{
+          backgroundImage: `url(${UNSPLASH("1414235077428-338989a2e8c0", 1920)})`,
+          transform: `scale(1.1) translateY(${scrollY * 0.3}px)`,
+        }}
+      />
+      <div className="hero-bg-overlay" />
       <div className="hero-bg-pattern" />
 
       <div className="relative z-10 container-fluid text-center">
         <div className="animate-fade-in-up">
-          <p className="text-label mb-4 md:mb-6">Fine Dining Experience</p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 border border-[var(--border-accent)] rounded-full mb-6 md:mb-8">
+            <span className="w-1.5 h-1.5 bg-[var(--accent)] rounded-full animate-pulse" />
+            <p className="text-label mb-0 text-[var(--accent)]">Fine Dining Experience</p>
+          </div>
         </div>
+
         <div className="animate-fade-in-up stagger-1">
           <h1 className="heading-xl mb-4 md:mb-8">
             Where Every Plate<br />
             <span className="text-gradient">Tells a Story</span>
           </h1>
         </div>
+
         <div className="animate-fade-in-up stagger-2">
-          <p className="text-body-lg max-w-2xl mx-auto mb-8 md:mb-12">
+          <p className="text-body-lg max-w-2xl mx-auto mb-8 md:mb-12 text-[var(--text-secondary)]">
             A sanctuary of culinary artistry where locally sourced ingredients meet artisan techniques. Experience the extraordinary.
           </p>
         </div>
+
         <div className="animate-fade-in-up stagger-3">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
-            <a href="#menu" className="btn-primary w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#menu" className="btn-primary w-full sm:w-auto group">
               Explore Menu
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
             <a href="#reservation" className="btn-secondary w-full sm:w-auto">Reserve a Table</a>
+          </div>
+        </div>
+
+        {/* Stats bar */}
+        <div className="animate-fade-in-up stagger-5 mt-12 md:mt-20">
+          <div className="flex items-center justify-center gap-8 md:gap-16">
+            {[
+              { num: "5+", label: "Years" },
+              { num: "50+", label: "Menu Items" },
+              { num: "4.9", label: "Rating" },
+            ].map(stat => (
+              <div key={stat.label} className="text-center">
+                <div className="stat-number">{stat.num}</div>
+                <div className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-[var(--text-muted)]">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -182,24 +241,19 @@ function Hero() {
 // ─── ABOUT ───────────────────────────────────────────────────────
 
 function About() {
+  const reveal = useReveal();
   return (
-    <section id="about" className="section-padding relative">
+    <section id="about" className="section-padding section-pattern relative">
       <div className="container-section">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+        <div ref={reveal} className="reveal grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
           {/* Image */}
           <div className="relative order-2 lg:order-1">
-            <div className="aspect-[4/5] bg-[var(--bg-secondary)] border border-[var(--border)] relative overflow-hidden rounded-2xl">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 md:w-20 md:h-20 border border-[var(--border-accent)] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="font-[var(--font-serif)] text-2xl md:text-3xl text-[var(--accent)]">M</span>
-                  </div>
-                  <p className="text-[var(--text-muted)] text-xs md:text-sm tracking-widest uppercase">Est. 2019</p>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[var(--bg-primary)] to-transparent" />
+            <div className="image-frame aspect-[4/5]">
+              <img src={UNSPLASH("1622021142947-da7dedc7c39a", 800)} alt="Chef cooking" loading="lazy" />
+              <div className="image-overlay" />
             </div>
             <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-32 h-32 md:w-48 md:h-48 border border-[var(--border-accent)] rounded-2xl" />
+            <div className="absolute -top-4 -left-4 w-24 h-24 md:w-32 md:h-32 border border-[var(--border)] rounded-2xl opacity-50" />
           </div>
 
           {/* Content */}
@@ -218,7 +272,7 @@ function About() {
                 { num: "4.9", label: "Rating" },
               ].map(stat => (
                 <div key={stat.label}>
-                  <div className="font-[var(--font-serif)] text-2xl md:text-3xl lg:text-4xl text-[var(--accent)] mb-1">{stat.num}</div>
+                  <div className="stat-number">{stat.num}</div>
                   <div className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-[var(--text-muted)]">{stat.label}</div>
                 </div>
               ))}
@@ -234,11 +288,12 @@ function About() {
 
 function Menu() {
   const [activeCategory, setActiveCategory] = useState(0);
+  const reveal = useReveal();
 
   return (
-    <section id="menu" className="section-padding bg-[var(--bg-secondary)] relative">
+    <section id="menu" className="section-padding bg-[var(--bg-secondary)] section-pattern relative">
       <div className="container-section">
-        <div className="text-center mb-8 md:mb-16">
+        <div ref={reveal} className="reveal text-center mb-8 md:mb-16">
           <p className="text-label">Culinary Selection</p>
           <h2 className="heading-lg mb-3 md:mb-4">The Menu</h2>
           <p className="text-body max-w-xl mx-auto">Each dish is a carefully composed narrative of flavor, texture, and artistry.</p>
@@ -264,13 +319,16 @@ function Menu() {
         {/* Menu Items */}
         <div className="space-y-0">
           {MENU_CATEGORIES[activeCategory].items.map((item, i) => (
-            <div key={item.name} className="group py-4 md:py-6 border-b border-[var(--border)] hover:border-[var(--border-accent)] transition-colors duration-300" style={{ animationDelay: `${i * 0.05}s` }}>
-              <div className="flex items-start justify-between gap-4">
+            <div key={item.name} className="menu-item group" style={{ animationDelay: `${i * 0.05}s` }}>
+              <div className="flex items-start gap-4">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0">
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2 md:gap-3 mb-1 flex-wrap">
-                    <h3 className="font-[var(--font-serif)] text-lg md:text-xl lg:text-2xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{item.name}</h3>
+                    <h3 className="font-[var(--font-display)] text-lg md:text-xl lg:text-2xl text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">{item.name}</h3>
                     <div className="flex-1 border-b border-dotted border-[var(--border)] min-w-4 hidden sm:block" />
-                    <span className="font-[var(--font-serif)] text-lg md:text-xl text-[var(--accent)] flex-shrink-0">{item.price}</span>
+                    <span className="font-[var(--font-display)] text-lg md:text-xl text-[var(--accent)] flex-shrink-0">{item.price}</span>
                   </div>
                   <p className="text-body text-xs md:text-sm">{item.desc}</p>
                 </div>
@@ -286,10 +344,11 @@ function Menu() {
 // ─── GALLERY ─────────────────────────────────────────────────────
 
 function Gallery() {
+  const reveal = useReveal();
   return (
-    <section id="gallery" className="section-padding relative">
+    <section id="gallery" className="section-padding section-pattern relative">
       <div className="container-section">
-        <div className="text-center mb-8 md:mb-16">
+        <div ref={reveal} className="reveal text-center mb-8 md:mb-16">
           <p className="text-label">Visual Journey</p>
           <h2 className="heading-lg mb-3 md:mb-4">Gallery</h2>
         </div>
@@ -297,16 +356,11 @@ function Gallery() {
         {/* Desktop Grid */}
         <div className="desktop-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
           {GALLERY_ITEMS.map((item, i) => (
-            <div key={i} className="group relative aspect-square bg-[var(--bg-secondary)] border border-[var(--border)] cursor-pointer overflow-hidden rounded-2xl hover:border-[var(--border-accent)] transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 hover:z-20">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center transition-transform duration-500 group-hover:scale-110">
-                  <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-2">{item.category}</p>
-                  <h3 className="font-[var(--font-serif)] text-lg md:text-xl text-[var(--text-primary)]">{item.title}</h3>
-                </div>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-4 md:bottom-6 left-4 md:left-6 right-4 md:right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                <p className="text-body text-xs md:text-sm">View Details →</p>
+            <div key={i} className="gallery-item">
+              <img src={item.img} alt={item.title} loading="lazy" />
+              <div className="gallery-label">
+                <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-1">{item.category}</p>
+                <h3 className="font-[var(--font-display)] text-base md:text-lg text-[var(--text-primary)]">{item.title}</h3>
               </div>
             </div>
           ))}
@@ -315,12 +369,11 @@ function Gallery() {
         {/* Mobile Scroll */}
         <div className="mobile-scroll scroll-row md:hidden">
           {GALLERY_ITEMS.map((item, i) => (
-            <div key={i} className="group relative aspect-square bg-[var(--bg-secondary)] border border-[var(--border)] overflow-hidden rounded-2xl flex-shrink-0" style={{ width: "72vw", maxWidth: "22rem" }}>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--accent)] mb-2">{item.category}</p>
-                  <h3 className="font-[var(--font-serif)] text-lg text-[var(--text-primary)]">{item.title}</h3>
-                </div>
+            <div key={i} className="gallery-item flex-shrink-0" style={{ width: "75vw", maxWidth: "22rem" }}>
+              <img src={item.img} alt={item.title} loading="lazy" />
+              <div className="gallery-label" style={{ transform: "translateY(0)" }}>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--accent)] mb-1">{item.category}</p>
+                <h3 className="font-[var(--font-display)] text-base text-[var(--text-primary)]">{item.title}</h3>
               </div>
             </div>
           ))}
@@ -333,10 +386,11 @@ function Gallery() {
 // ─── TESTIMONIALS ────────────────────────────────────────────────
 
 function Testimonials() {
+  const reveal = useReveal();
   return (
-    <section id="testimonials" className="section-padding bg-[var(--bg-secondary)] relative">
+    <section id="testimonials" className="section-padding bg-[var(--bg-secondary)] section-pattern relative">
       <div className="container-section">
-        <div className="text-center mb-8 md:mb-16">
+        <div ref={reveal} className="reveal text-center mb-8 md:mb-16">
           <p className="text-label">Guest Voices</p>
           <h2 className="heading-lg mb-3 md:mb-4">Testimonials</h2>
         </div>
@@ -351,9 +405,12 @@ function Testimonials() {
                 ))}
               </div>
               <p className="text-body mb-4 md:mb-6 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-              <div className="border-t border-[var(--border)] pt-3 md:pt-4">
-                <p className="font-[var(--font-serif)] text-base md:text-lg text-[var(--text-primary)]">{t.name}</p>
-                <p className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-[var(--accent)]">{t.role}</p>
+              <div className="border-t border-[var(--border)] pt-3 md:pt-4 flex items-center gap-3">
+                <img src={t.avatar} alt={t.name} className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-[var(--border)]" loading="lazy" />
+                <div>
+                  <p className="font-[var(--font-display)] text-base md:text-lg text-[var(--text-primary)]">{t.name}</p>
+                  <p className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-[var(--accent)]">{t.role}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -362,16 +419,19 @@ function Testimonials() {
         {/* Mobile Scroll */}
         <div className="mobile-scroll scroll-row md:hidden">
           {TESTIMONIALS.map((t, i) => (
-            <div key={i} className="glass-card p-5 flex-shrink-0" style={{ width: "78vw", maxWidth: "22rem" }}>
+            <div key={i} className="glass-card p-5 flex-shrink-0" style={{ width: "80vw", maxWidth: "22rem" }}>
               <div className="star-rating mb-3">
                 {[...Array(5)].map((_, j) => (
                   <svg key={j} className="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 ))}
               </div>
               <p className="text-body text-sm mb-4 leading-relaxed">&ldquo;{t.text}&rdquo;</p>
-              <div className="border-t border-[var(--border)] pt-3">
-                <p className="font-[var(--font-serif)] text-base text-[var(--text-primary)]">{t.name}</p>
-                <p className="text-[10px] tracking-[0.15em] uppercase text-[var(--accent)]">{t.role}</p>
+              <div className="border-t border-[var(--border)] pt-3 flex items-center gap-3">
+                <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full object-cover border border-[var(--border)]" loading="lazy" />
+                <div>
+                  <p className="font-[var(--font-display)] text-base text-[var(--text-primary)]">{t.name}</p>
+                  <p className="text-[10px] tracking-[0.15em] uppercase text-[var(--accent)]">{t.role}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -385,11 +445,12 @@ function Testimonials() {
 
 function Reservation() {
   const [guests, setGuests] = useState(2);
+  const reveal = useReveal();
 
   return (
-    <section id="reservation" className="section-padding relative">
+    <section id="reservation" className="section-padding section-pattern relative">
       <div className="container-section">
-        <div className="max-w-3xl mx-auto">
+        <div ref={reveal} className="reveal max-w-3xl mx-auto">
           <div className="text-center mb-8 md:mb-16">
             <p className="text-label">Join Us</p>
             <h2 className="heading-lg mb-3 md:mb-4">Reserve a Table</h2>
@@ -450,33 +511,43 @@ function Reservation() {
 // ─── CONTACT ─────────────────────────────────────────────────────
 
 function Contact() {
+  const reveal = useReveal();
   return (
-    <section id="contact" className="section-padding bg-[var(--bg-secondary)] relative">
+    <section id="contact" className="section-padding bg-[var(--bg-secondary)] section-pattern relative">
       <div className="container-section">
-        <div className="text-center mb-8 md:mb-16">
-          <p className="text-label">Find Us</p>
-          <h2 className="heading-lg mb-3 md:mb-4">Contact</h2>
-        </div>
+        <div ref={reveal} className="reveal">
+          <div className="text-center mb-8 md:mb-16">
+            <p className="text-label">Find Us</p>
+            <h2 className="heading-lg mb-3 md:mb-4">Contact</h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-16">
-          {CONTACT_CARDS.map((card, i) => (
-            <div key={i} className="glass-card p-5 md:p-8 text-center">
-              <div className="w-10 h-10 md:w-12 md:h-12 border border-[var(--border-accent)] rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-[var(--accent)] text-lg md:text-xl">
-                {card.icon}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-16">
+            {CONTACT_CARDS.map((card, i) => (
+              <div key={i} className="glass-card p-5 md:p-8 text-center">
+                <div className="w-10 h-10 md:w-12 md:h-12 border border-[var(--border-accent)] rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 text-[var(--accent)] text-lg md:text-xl">
+                  {card.icon}
+                </div>
+                <h3 className="font-[var(--font-display)] text-base md:text-lg text-[var(--text-primary)] mb-2 md:mb-3">{card.title}</h3>
+                {card.lines.map((line, j) => (
+                  <p key={j} className="text-body text-xs md:text-sm">{line}</p>
+                ))}
               </div>
-              <h3 className="font-[var(--font-serif)] text-base md:text-lg text-[var(--text-primary)] mb-2 md:mb-3">{card.title}</h3>
-              {card.lines.map((line, j) => (
-                <p key={j} className="text-body text-xs md:text-sm">{line}</p>
-              ))}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* Map Placeholder */}
-        <div className="h-48 md:h-64 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl text-[var(--accent)] mb-2 md:mb-3 opacity-50">📍</div>
-            <p className="text-[var(--text-muted)] text-xs md:text-sm">Interactive Map</p>
+          {/* Map */}
+          <div className="image-frame h-48 md:h-80">
+            <img
+              src={UNSPLASH("1517248135467-4c7edcad34c4", 1920)}
+              alt="Restaurant interior"
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/60 to-transparent" />
+            <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8">
+              <p className="font-[var(--font-display)] text-lg md:text-2xl text-[var(--text-primary)]">MAISON Restaurant</p>
+              <p className="text-body text-xs md:text-sm">123 Culinary Lane, New York</p>
+            </div>
           </div>
         </div>
       </div>
@@ -492,7 +563,10 @@ function Footer() {
       <div className="container-section">
         <div className="footer-grid mb-8 md:mb-12">
           <div className="md:col-span-2 lg:col-span-1">
-            <span className="font-[var(--font-serif)] text-xl md:text-2xl text-[var(--text-primary)] tracking-wide">MAISON</span>
+            <a href="#home" className="nav-logo mb-3 md:mb-4 inline-flex">
+              <div className="nav-logo-icon">M</div>
+              <span>MAISON</span>
+            </a>
             <p className="text-body text-xs md:text-sm mt-3 md:mt-4 max-w-sm">A sanctuary of culinary artistry where locally sourced ingredients meet artisan techniques. Every plate tells a story.</p>
             <div className="flex gap-3 md:gap-4 mt-4 md:mt-6">
               {[
@@ -548,7 +622,7 @@ function Footer() {
 export default function Home() {
   return (
     <div className="min-h-screen relative">
-      <div className="bg-pattern" />
+      <div className="bg-orbs" />
       <div className="relative z-10">
         <Navbar />
         <Hero />
