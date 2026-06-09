@@ -358,6 +358,9 @@ body {
   border-bottom: 0.0625rem solid var(--border);
   text-decoration: none;
   transition: color 0.2s;
+}
+.mobile-drawer-panel a:hover { color: var(--accent); }
+
 /* ─── HERO WITH PARALLAX ──────────────────────────────────────── */
 .hero-section {
   position: relative;
